@@ -1,4 +1,3 @@
-```html
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -7,13 +6,13 @@
     <title>水とパイプの体験まつり | 小松管工事協同組合青年部40周年記念</title>
     <style>
         :root {
-            --primary: #00b4d8;
-            --primary-dark: #0077b6;
-            --primary-light: #90e0ef;
-            --accent: #ffb703;
-            --accent-orange: #fb8500;
-            --text-main: #2b2d42;
-            --bg-light: #f4f9f9;
+            --water-blue: #00b4d8;
+            --water-dark: #03045e;
+            --water-light: #90e0ef;
+            --water-clear: #caf0f8;
+            --accent-orange: #ff7043;
+            --accent-yellow: #ffca28;
+            --text-color: #2c3e50;
             --white: #ffffff;
         }
 
@@ -29,20 +28,46 @@
 
         body {
             font-family: 'Helvetica Neue', Arial, 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', Meiryo, sans-serif;
-            color: var(--text-main);
-            background-color: var(--bg-light);
+            color: var(--text-color);
+            background-color: var(--water-clear);
             line-height: 1.8;
             overflow-x: hidden;
         }
 
-        /* アニメーション用のベースクラス */
-        .fade-in {
-            opacity: 0;
-            transform: translateY(30px);
-            transition: opacity 0.8s ease, transform 0.8s ease;
+        /* 背景の水滴アニメーション */
+        .bubble-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+            overflow: hidden;
         }
 
-        .fade-in.active {
+        .bubble {
+            position: absolute;
+            bottom: -50px;
+            background: rgba(0, 180, 216, 0.15);
+            border-radius: 50%;
+            animation: rise 12s infinite ease-in-out;
+        }
+
+        @keyframes rise {
+            0% { transform: translateY(0) scale(0.5); opacity: 0; }
+            50% { opacity: 0.6; }
+            100% { transform: translateY(-110vh) scale(1.2); opacity: 0; }
+        }
+
+        /* フェードインエフェクト */
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 1s ease;
+        }
+
+        .reveal.active {
             opacity: 1;
             transform: translateY(0);
         }
@@ -54,479 +79,241 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            background: linear-gradient(135deg, rgba(0, 119, 182, 0.8) 0%, rgba(144, 224, 239, 0.6) 100%), 
-                        url('https://images.unsplash.com/photo-1541888946425-d81bb19240f5?q=80&w=1920&auto=format&fit=cover') no-repeat center center/cover;
-            color: var(--white);
             text-align: center;
-            padding: 60px 20px;
+            padding: 40px 20px;
+            color: var(--white);
+            background: linear-gradient(135deg, rgba(3, 4, 94, 0.85) 0%, rgba(0, 180, 216, 0.6) 100%), 
+                        url('https://images.unsplash.com/photo-1542013936693-8848e57423e3?q=80&w=1920&auto=format&fit=cover') no-repeat center center/cover;
             overflow: hidden;
         }
 
-        /* 水しぶきをイメージした背景装飾 */
-        .hero::before {
-            content: '';
+        /* 配管をイメージした装飾ライン */
+        .pipe-line-deco {
             position: absolute;
-            bottom: -50px;
+            bottom: 0;
             left: 0;
             width: 100%;
-            height: 100px;
-            background: var(--bg-light);
-            clip-path: ellipse(60% 40px at 50% 100%);
+            height: 15px;
+            background: linear-gradient(90deg, #b0bec5, #cfd8dc, #b0bec5);
+            border-top: 3px solid #78909c;
+            border-bottom: 3px solid #37474f;
+            box-shadow: inset 0 3px 5px rgba(0,0,0,0.3);
         }
 
-        .hero-content {
-            max-width: 900px;
+        .hero-inner {
+            max-width: 1000px;
             z-index: 2;
         }
 
-        .badge {
+        .badge-40th {
             display: inline-block;
-            background: var(--accent);
-            color: var(--text-main);
-            font-weight: bold;
-            padding: 8px 24px;
+            background: linear-gradient(45deg, var(--accent-orange), var(--accent-yellow));
+            color: var(--white);
+            font-weight: 900;
+            padding: 10px 30px;
             border-radius: 50px;
-            margin-bottom: 24px;
-            font-size: 1.1rem;
-            letter-spacing: 1px;
-            box-shadow: 0 4px 15px rgba(255, 183, 3, 0.4);
+            font-size: 1.2rem;
+            margin-bottom: 25px;
+            box-shadow: 0 5px 20px rgba(255,112,67,0.4);
+            letter-spacing: 2px;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
         }
 
         .hero h1 {
-            font-size: 3.5rem;
+            font-size: 3.8rem;
             font-weight: 900;
             line-height: 1.3;
-            margin-bottom: 24px;
-            text-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            margin-bottom: 25px;
+            text-shadow: 0 4px 15px rgba(0,0,0,0.4);
         }
 
         .hero h1 span {
             font-size: 1.8rem;
             display: block;
+            color: var(--water-light);
             font-weight: 700;
-            color: var(--primary-light);
+            letter-spacing: 4px;
             margin-bottom: 10px;
         }
 
-        .catchphrase-box {
+        .catch-container {
             display: inline-block;
-            background: rgba(255, 255, 255, 0.15);
-            backdrop-filter: blur(8px);
-            border: 2px solid rgba(255, 255, 255, 0.3);
-            padding: 15px 40px;
-            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 2px dashed var(--water-light);
+            padding: 20px 40px;
+            border-radius: 15px;
             margin-bottom: 40px;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
         }
 
-        .catchphrase {
-            font-size: 2rem;
+        .hero-catch {
+            font-size: 2.2rem;
             font-weight: 800;
+            color: var(--accent-yellow);
             letter-spacing: 2px;
-            color: var(--white);
+            text-shadow: 0 2px 5px rgba(0,0,0,0.5);
         }
 
-        .hero-date {
-            font-size: 1.4rem;
-            font-weight: bold;
-            margin-bottom: 40px;
-            background: rgba(0, 53, 102, 0.4);
-            display: inline-block;
-            padding: 10px 30px;
-            border-radius: 50px;
-        }
-
-        .cta-btn {
-            display: inline-block;
-            background: linear-gradient(90deg, var(--accent) 0%, var(--accent-orange) 100%);
-            color: var(--white);
+        .hero-meta {
             font-size: 1.5rem;
             font-weight: bold;
-            text-decoration: none;
-            padding: 20px 50px;
-            border-radius: 50px;
-            box-shadow: 0 6px 20px rgba(251, 133, 0, 0.4);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            margin-bottom: 40px;
+            text-shadow: 0 2px 8px rgba(0,0,0,0.5);
         }
 
-        .cta-btn:hover {
-            transform: translateY(-3px) scale(1.03);
-            box-shadow: 0 10px 25px rgba(251, 133, 0, 0.6);
+        .btn-water {
+            display: inline-block;
+            background: linear-gradient(90deg, #0077b6, #00b4d8);
+            color: var(--white);
+            font-size: 1.6rem;
+            font-weight: bold;
+            text-decoration: none;
+            padding: 22px 60px;
+            border-radius: 50px;
+            box-shadow: 0 8px 25px rgba(0,180,216,0.5);
+            transition: all 0.3s ease;
+            border: 2px solid rgba(255,255,255,0.4);
+        }
+
+        .btn-water:hover {
+            transform: translateY(-4px) scale(1.02);
+            box-shadow: 0 12px 35px rgba(0,180,216,0.7);
+            background: linear-gradient(90deg, #00b4d8, #00f5d4);
         }
 
         /* セクション共通 */
         section {
-            padding: 100px 20px;
+            padding: 120px 20px;
             max-width: 1200px;
             margin: 0 auto;
         }
 
         .section-title {
             text-align: center;
-            font-size: 2.5rem;
+            font-size: 2.8rem;
             font-weight: 800;
-            color: var(--primary-dark);
-            margin-bottom: 60px;
+            color: var(--water-dark);
+            margin-bottom: 80px;
             position: relative;
         }
 
         .section-title::after {
-            content: '';
+            content: '💧';
             position: absolute;
-            bottom: -15px;
+            bottom: -35px;
             left: 50%;
             transform: translateX(-50%);
-            width: 80px;
-            height: 5px;
-            background: var(--primary);
-            border-radius: 10px;
+            font-size: 1.8rem;
         }
 
         /* 祭りの特徴 */
-        .intro-container {
+        .feature-box {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 50px;
+            gap: 60px;
             align-items: center;
+            background: var(--white);
+            padding: 50px;
+            border-radius: 30px;
+            box-shadow: 0 20px 40px rgba(3,4,94,0.05);
+            border-left: 10px solid var(--water-blue);
         }
 
-        .intro-img {
+        .feature-img-wrapper {
+            position: relative;
+        }
+
+        .feature-img {
             width: 100%;
             border-radius: 20px;
-            box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+            display: block;
         }
 
-        .intro-text h3 {
-            font-size: 1.8rem;
-            color: var(--primary-dark);
+        .feature-content h3 {
+            font-size: 2rem;
+            color: var(--water-dark);
+            margin-bottom: 25px;
+            line-height: 1.4;
+        }
+
+        .feature-content p {
+            font-size: 1.15rem;
+            color: #4a5568;
             margin-bottom: 20px;
+            text-align: justify;
         }
 
-        .intro-text p {
-            margin-bottom: 20px;
-            color: #4a4a4a;
-            font-size: 1.1rem;
+        /* 出し物・イベント内容 */
+        .event-section {
+            background: linear-gradient(180deg, var(--water-clear) 0%, #ffffff 50%, var(--water-clear) 100%);
+            max-width: 100%;
         }
 
-        /* イベント・出し物 */
-        .bg-gradient-section {
-            background: linear-gradient(180deg, var(--bg-light) 0%, #e8f7fa 50%, var(--bg-light) 100%);
+        .event-container {
+            max-width: 1200px;
+            margin: 0 auto;
         }
 
         .event-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-            gap: 30px;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 35px;
         }
 
         .event-card {
             background: var(--white);
-            border-radius: 20px;
+            border-radius: 24px;
             overflow: hidden;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.05);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 12px 25px rgba(0,0,0,0.04);
+            transition: all 0.3s ease;
+            border: 1px solid rgba(0,180,216,0.1);
         }
 
         .event-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 15px 30px rgba(0,180,216,0.2);
+            transform: translateY(-12px);
+            box-shadow: 0 20px 40px rgba(0,180,216,0.25);
         }
 
-        .event-img {
-            width: 100%;
-            height: 200px;
-            object-fit: cover;
-        }
-
-        .event-info {
-            padding: 25px;
-        }
-
-        .event-info h3 {
-            font-size: 1.3rem;
-            color: var(--primary-dark);
-            margin-bottom: 12px;
-            border-left: 4px solid var(--primary);
-            padding-left: 10px;
-        }
-
-        .event-info p {
-            color: #666;
-            font-size: 0.95rem;
-        }
-
-        /* アクセス・インフォメーション */
-        .access-wrapper {
-            display: grid;
-            grid-template-columns: 1.2fr 0.8fr;
-            gap: 40px;
-        }
-
-        .info-table {
-            width: 100%;
-            border-collapse: collapse;
-            background: var(--white);
-            border-radius: 15px;
+        .event-img-box {
+            position: relative;
+            height: 220px;
             overflow: hidden;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.05);
         }
 
-        .info-table th, .info-table td {
-            padding: 20px;
-            text-align: left;
+        .event-card-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
         }
 
-        .info-table th {
-            background-color: var(--primary-dark);
+        .event-card:hover .event-card-img {
+            transform: scale(1.08);
+        }
+
+        .event-tag {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            background: rgba(3, 4, 94, 0.85);
             color: var(--white);
-            width: 30%;
+            padding: 5px 15px;
+            border-radius: 50px;
+            font-size: 0.85rem;
             font-weight: bold;
+            backdrop-filter: blur(5px);
         }
 
-        .info-table td {
-            border-bottom: 1px solid #eee;
-        }
-
-        .info-table tr:last-child td {
-            border-bottom: none;
-        }
-
-        .parking-box {
-            background: var(--white);
+        .event-body {
             padding: 30px;
-            border-radius: 15px;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.05);
-            border-top: 6px solid var(--accent-orange);
         }
 
-        .parking-box h3 {
-            font-size: 1.4rem;
-            color: var(--accent-orange);
-            margin-bottom: 15px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .parking-box p {
-            font-size: 1rem;
-            color: #4a4a4a;
-            margin-bottom: 15px;
-        }
-
-        .parking-notice {
-            background: #fff3cd;
-            border: 1px solid #ffeeba;
-            color: #856404;
-            padding: 15px;
-            border-radius: 8px;
-            font-size: 0.9rem;
-            font-weight: bold;
-        }
-
-        /* フッター */
-        footer {
-            background: #1d3557;
-            color: var(--white);
-            text-align: center;
-            padding: 50px 20px;
-            margin-top: 60px;
-        }
-
-        footer .footer-logo {
-            font-size: 1.4rem;
-            font-weight: bold;
-            margin-bottom: 10px;
-        }
-
-        footer p {
-            font-size: 0.9rem;
-            opacity: 0.7;
-        }
-
-        /* レスポンシブ設計 */
-        @media (max-width: 968px) {
-            .hero h1 {
-                font-size: 2.5rem;
-            }
-            .catchphrase {
-                font-size: 1.5rem;
-            }
-            .intro-container, .access-wrapper {
-                grid-template-columns: 1fr;
-                gap: 30px;
-            }
-            .intro-img {
-                order: -1;
-            }
-        }
-
-        @media (max-width: 576px) {
-            .hero h1 {
-                font-size: 2rem;
-            }
-            .catchphrase-box {
-                padding: 10px 20px;
-            }
-            .catchphrase {
-                font-size: 1.2rem;
-            }
-            .cta-btn {
-                font-size: 1.2rem;
-                padding: 15px 30px;
-            }
-            .info-table th, .info-table td {
-                display: block;
-                width: 100%;
-            }
-            .info-table th {
-                padding-bottom: 5px;
-            }
-            .info-table td {
-                padding-top: 5px;
-            }
-        }
-    </style>
-</head>
-<body>
-
-    <header class="hero">
-        <div class="hero-content">
-            <span class="badge">初開催 40周年記念イベント</span>
-            <h1><span>小松管工事協同組合青年部40周年記念</span>水とパイプの体験まつり</h1>
-            <div class="catchphrase-box">
-                <p class="catchphrase">思いっきり濡れよう ～配管工の仕事に挑戦～</p>
-            </div>
-            <div>
-                <p class="hero-date">令和8年8月8日（土） 9:00～15:00</p>
-            </div>
-            <a href="#access" class="cta-btn">無料で参加する！</a>
-        </div>
-    </header>
-
-    <section id="features" class="fade-in">
-        <h2 class="section-title">お祭りの特徴</h2>
-        <div class="intro-container">
-            <div class="intro-text">
-                <h3>地域を支える感謝と、未来へつなぐ水とパイプの絆</h3>
-                <p>40周年を迎える小松管工事協同組合青年部が、日頃から地域インフラを支えてくださっている皆さまへ感謝を込めて、さわやかで画期的な体験型お祭りを初開催します！</p>
-                <p>私たちの暮らしに最も身近で大切な「水」を届ける配管工。そのお仕事の魅力を五感で体感し、思いっきり楽しみながら学べるプログラムを詰め込みました。</p>
-                <p>未来の地域インフラを一緒に支えてくれる元気な若手や、ものづくりが大好きな子どもたちの大挑戦を待っています！</p>
-            </div>
-            <div>
-                <img src="https://images.unsplash.com/photo-1581094288338-2314dddb7ece?q=80&w=800&auto=format&fit=cover" alt="ものづくり・配管のイメージ" class="intro-img">
-            </div>
-        </div>
-    </section>
-
-    <div class="bg-gradient-section">
-        <section id="events">
-            <h2 class="section-title">注目の体験イベント</h2>
-            <div class="event-grid">
-                
-                <div class="event-card fade-in">
-                    <img src="https://images.unsplash.com/photo-1504307651254-35680f356dfd?q=80&w=600&auto=format&fit=cover" alt="配管作業体験" class="event-img">
-                    <div class="event-info">
-                        <h3>3級配管技能士体験</h3>
-                        <p>本物のパイプや工具を使って、職人さんの技術をリアルに体験！配管工の凄さを実感してみよう。</p>
-                    </div>
-                </div>
-
-                <div class="event-card fade-in">
-                    <img src="https://images.unsplash.com/photo-1599740831664-d71000b14ab2?q=80&w=600&auto=format&fit=cover" alt="防災訓練" class="event-img">
-                    <div class="event-info">
-                        <h3>防災訓練ショー</h3>
-                        <p>災害時に水を守るためには？ライフラインの最前線で戦う青年部が、大迫力の訓練パフォーマンスを披露！</p>
-                    </div>
-                </div>
-
-                <div class="event-card fade-in">
-                    <img src="https://images.unsplash.com/photo-1563821732481-2c67644265cc?q=80&w=600&auto=format&fit=cover" alt="迷路" class="event-img">
-                    <div class="event-info">
-                        <h3>配管迷路</h3>
-                        <p>張り巡らされた不思議なパイプの巨大迷路が出現！水をたどって無事にゴールまで脱出できるかな？</p>
-                    </div>
-                </div>
-
-                <div class="event-card fade-in">
-                    <img src="https://images.unsplash.com/photo-1518133680790-3985ecea5ecd?q=80&w=600&auto=format&fit=cover" alt="クイズ" class="event-img">
-                    <div class="event-info">
-                        <h3>バルブクイズ</h3>
-                        <p>水道の蛇口やバルブに隠された秘密を解き明かせ！全問正解者にはおもしろい景品があるかも？</p>
-                    </div>
-                </div>
-
-            </div>
-        </section>
-    </div>
-
-    <section id="access" class="fade-in">
-        <h2 class="section-title">アクセスと開催概要</h2>
-        <div class="access-wrapper">
-            <div>
-                <table class="info-table">
-                    <tr>
-                        <th>開催日時</th>
-                        <td>令和8年8月8日（土） 9:00 ～ 15:00</td>
-                    </tr>
-                    <tr>
-                        <th>会場</th>
-                        <td>
-                            <strong>小松管工事協同組合</strong><br>
-                            石川県小松市下牧町ツ28
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>参加条件</th>
-                        <td>料金無料 / 飛び込み参加大歓迎！</td>
-                    </tr>
-                    <tr>
-                        <th>対象層</th>
-                        <td>市内小学生、保護者、地域住民の皆さま</td>
-                    </tr>
-                    <tr>
-                        <th>主催・問合せ</th>
-                        <td>小松管工事協同組合 青年部</td>
-                    </tr>
-                </table>
-            </div>
-            <div>
-                <div class="parking-box">
-                    <h3>お車でお越しの方へ</h3>
-                    <p>当日は<strong>「フレスポ小松」</strong>さん内にお祭り専用の特設駐車場をご用意しております。</p>
-                    <div class="parking-notice">
-                        ※会場周辺では、誘導係員の指示に従って安全にご来場・ご駐車ください。
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <footer>
-        <div class="footer-logo">小松管工事協同組合青年部 40周年記念</div>
-        <p>&copy; 2026 水とパイプの体験まつり All Rights Reserved.</p>
-    </footer>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const fadeElements = document.querySelectorAll('.fade-in');
-            
-            const handleScroll = () => {
-                fadeElements.forEach(el => {
-                    const rect = el.getBoundingClientRect();
-                    const viewHeight = Math.max(document.documentElement.clientHeight, window.innerHeight);
-                    if (!(rect.bottom < 0 || rect.top - viewHeight >= -100)) {
-                        el.classList.add('active');
-                    }
-                });
-            };
-
-            window.addEventListener('scroll', handleScroll);
-            // 初回読み込み時にも一度実行
-            handleScroll();
-        });
-    </script>
-</body>
-</html>
-
-```
+        .event-body h3 {
