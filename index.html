@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>水とパイプの体験まつり | 小松管工事協同組合青年部40周年記念</title>
+<style>
+:root {
+--primary-color: #00a8e8;
+--primary-light: #e6f7ff;
+--primary-dark: #0077b6;
+--accent-color: #ff9f1c;
+--text-color: #333333;
+--bg-color: #ffffff;
+--font-family: 'Helvetica Neue', Arial, 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', Meiryo, sans-serif;
+}
+
+```
+    * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+    }
+
+    html {
+        scroll-behavior: smooth;
+    }
+
+    body {
+        font-family: var(--font-family);
+        color: var(--text-color);
+        background-color: var(--bg-color);
+        line-height: 1.8;
+        overflow-x: hidden;
+    }
+
+    /* アニメーション用の初期状態 */
+    .fade-in {
+        opacity: 0;
+        transform: translateY(30px);
+        transition: opacity 1.2s ease, transform 1.2s ease;
+    }
+
+    .fade-in.is-visible {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    /* ヒーローセクション */
+    header {
+        position: relative;
+        height: 100vh;
+        min-height: 600px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        color: #ffffff;
+        background: linear-gradient(rgba(0, 119, 182, 0.6), rgba(0, 168, 228, 0.5)), 
+                    url('[https://images.unsplash.com/photo-1581092921461-eab62e97a780?auto=format&fit=crop&w=1920&q=80](https://images.unsplash.com/photo-1581092921461-eab62e97a780?auto=format&fit=crop&w=1920&q=80)') no-repeat center center/cover;
+        padding: 0 20px;
+    }
+
+    .hero-content {
+        max-width: 900px;
+        background: rgba(255, 255, 255, 0.15);
+        padding: 40px 20px;
+        border-radius: 12px;
+        backdrop-filter: blur(8px);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    }
+
+    .subtitle {
+        font-size: 1.2rem;
+        font-weight: bold;
+        letter-spacing: 0.1em;
+        margin-bottom: 15px;
+        text-shadow: 1px 1px 4px rgba(0,0,0,0.4);
+        color: var(--primary-light);
+    }
+
+    h1 {
+        font-size: 3rem;
+        font-weight: 900;
+        line-height: 1.3;
+        margin-bottom: 25px;
+        text-shadow: 2px 2px 8px rgba(0,0,0,0.5);
+    }
+
+    .catchphrase {
+        font-size: 1.6rem;
+        font-weight: bold;
+        background: linear-gradient(transparent 60%, var(--accent-color) 60%);
+        display: inline-block;
+        padding: 0 10px;
+        margin-bottom: 35px;
+        text-shadow: 1px 1px 3px rgba(0,0,0,0.3);
+    }
+
+    .btn {
+        display: inline-block;
+        padding: 15px 40px;
+        background-color: var(--accent-color);
+        color: #ffffff;
+        text-decoration: none;
+        font-weight: bold;
+        border-radius: 50px;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 15px rgba(255, 159, 28, 0.4);
+        font-size: 1.1rem;
+    }
+
+    .btn:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 6px 20px rgba(255, 159, 28, 0.6);
+        background-color: #e68a00;
+    }
+
+    /* 共通セクションスタイル */
+    section {
+        padding: 100px 20px;
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    .section-title {
+        text-align: center;
+        font-size: 2.2rem;
+        position: relative;
+        margin-bottom: 60px;
+        color: var(--primary-dark);
+    }
+
+    .section-title::after {
+        content: '';
+        position: absolute;
+        left: 50%;
+        bottom: -15px;
+        transform: translateX(-50%);
+        width: 60px;
+        height: 4px;
+        background-color: var(--primary-color);
+        border-radius: 2px;
+    }
+
+    /* 祭りの特徴セクション */
+    #features {
+        background-color: #ffffff;
+    }
+
+    .features-container {
+        display: flex;
+        align-items: center;
+        gap: 50px;
+        flex-wrap: wrap;
+    }
+
+    .features-text {
+        flex: 1;
+        min-width: 300px;
+    }
+
+    .features-text h3 {
+        font-size: 1.5rem;
+        color: var(--primary-dark);
+        margin-bottom: 20px;
+    }
+
+    .features-text p {
+        margin-bottom: 20px;
+        color: #555555;
+    }
+
+    .features-image {
+        flex: 1;
+        min-width: 300px;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+    }
+
+    .features-image img {
+        width: 100%;
+        height: auto;
+        display: block;
+        transition: transform 0.5s ease;
+    }
+
+    .features-image:hover img {
+        transform: scale(1.05);
+    }
+
+    /* イベント内容セクション */
+    #events {
+        background-color: var(--primary-light);
+        max-width: 100%;
+    }
+
+    .events-inner {
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    .events-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 30px;
+    }
+
+    .event-card {
+        background-color: #ffffff;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        transition: transform 0.3s ease;
+    }
+
+    .event-card:hover {
+        transform: translateY(-5px);
+    }
+
+    .event-card img {
+        width: 100%;
+        height: 200px;
+        object-fit: cover;
+    }
+
+    .event-card-content {
+        padding: 20px;
+    }
+
+    .event-card-content h3 {
+        font-size: 1.25rem;
+        color: var(--primary-dark);
+        margin-bottom: 10px;
+    }
+
+    .event-card-content p {
+        font-size: 0.95rem;
+        color: #666666;
+    }
+
+    /* アクセス・概要情報セクション */
+    #access {
+        background-color: #ffffff;
+    }
+
+    .info-table {
+        width: 100%;
+        max-width: 800px;
+        margin: 0 auto;
+        border-collapse: collapse;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        border-radius: 8px;
+        overflow: hidden;
+    }
+
+    .info-table th, .info-table td {
+        padding: 20px;
+        border-bottom: 1px solid #eef2f5;
+    }
+
+    .info-table th {
+        background-color: var(--primary-dark);
+        color: #ffffff;
+        width: 30%;
+        text-align: left;
+        font-weight: bold;
+    }
+
+    .info-table td {
+        background-color: #fafbfc;
+    }
+
+    .info-table tr:last-child th, .info-table tr:last-child td {
+        border-bottom: none;
+    }
+
+    /* フッター */
+    footer {
+        background-color: #1a252c;
+        color: #ffffff;
+        padding: 40px 20px;
+        text-align: center;
+    }
+
+    .footer-content {
+        max-width: 600px;
+        margin: 0 auto;
+    }
+
+    .footer-content p {
+        margin-bottom: 10px;
+        font-size: 0.9rem;
+        color: #a0aec0;
+    }
+
+    .footer-content .org-name {
+        font-size: 1.2rem;
+        font-weight: bold;
+        color: #ffffff;
+        margin-bottom: 20px;
+    }
+
+    /* レスポンシブ対応 */
+    @media (max-width: 768px) {
+        h1 {
+            font-size: 2rem;
+        }
+        .catchphrase {
+            font-size: 1.2rem;
+        }
+        header {
+            height: 80vh;
+        }
+        section {
+            padding: 60px 20px;
+        }
+        .info-table th, .info-table td {
+            display: block;
+            width: 100%;
+        }
+        .info-table th {
+            border-bottom: none;
+            padding-bottom: 10px;
+        }
+        .info-table td {
+            padding-top: 10px;
+        }
+    }
+</style>
+
+```
+
+</head>
+<body>
+
+```
+<header>
+    <div class="hero-content fade-in">
+        <p class="subtitle">小松管工事協同組合青年部40周年記念</p>
+        <h1>水とパイプの体験まつり</h1>
+        <p class="catchphrase">思いっきり濡れよう ～配管工の仕事に挑戦～</p>
+        <div>
+            <a href="#access" class="btn">開催概要を見る</a>
+        </div>
+    </div>
+</header>
+
+<section id="features">
+    <h2 class="section-title">祭りの特徴</h2>
+    <div class="features-container">
+        <div class="features-text fade-in">
+            <h3>地域に支えられた40年の感謝を込めて</h3>
+            <p>小松管工事協同組合青年部は、今年で記念すべき40周年を迎えることができました。これもひとえに、日頃から私たちを温かく支えてくださる地域の皆さまのおかげです。</p>
+            <p>そこで今回、皆さまへの深い感謝の気持ちを込め、初めての試みとなる「水とパイプの体験まつり」を初開催いたします！</p>
+            <h3>未来の地域インフラを担う若手集まれ！</h3>
+            <p>私たちの暮らしに欠かせない「水」を安全に届ける配管工の仕事。その魅力を次世代を担う子どもたちに伝えるため、さわやかで画期的な体験型イベントをご用意しました。未来のインフラを一緒に支える頼もしい仲間との出会いも楽しみにしています！</p>
+        </div>
+        <div class="features-image fade-in">
+            <img src="[https://images.unsplash.com/photo-1542013936693-8848e57423e3?auto=format&fit=crop&w=600&q=80](https://images.unsplash.com/photo-1542013936693-8848e57423e3?auto=format&fit=crop&w=600&q=80)" alt="きれいな水とパイプのイメージ">
+        </div>
+    </div>
+</section>
+
+<section id="events">
+    <div class="events-inner">
+        <h2 class="section-title">イベント内容・出し物</h2>
+        <div class="events-grid">
+            
+            <div class="event-card fade-in">
+                <img src="[https://images.unsplash.com/photo-1504307651254-35680f356dfd?auto=format&fit=crop&w=400&q=80](https://images.unsplash.com/photo-1504307651254-35680f356dfd?auto=format&fit=crop&w=400&q=80)" alt="配管作業の体験">
+                <div class="event-card-content">
+                    <h3>3級配管技能士体験</h3>
+                    <p>本物の工具やパイプを使って、プロの配管技術に挑戦してみよう！職人さんが優しく教えてくれます。</p>
+                </div>
+            </div>
+
+            <div class="event-card fade-in">
+                <img src="[https://images.unsplash.com/photo-1599740831666-415c1176b90f?auto=format&fit=crop&w=400&q=80](https://images.unsplash.com/photo-1599740831666-415c1176b90f?auto=format&fit=crop&w=400&q=80)" alt="防災訓練">
+                <div class="event-card-content">
+                    <h3>防災訓練ショー</h3>
+                    <p>地域の安全を守るための迫力満点な防災訓練！いざという時に役立つ知識も楽しく学べます。</p>
+                </div>
+            </div>
+
+            <div class="event-card fade-in">
+                <img src="[https://images.unsplash.com/photo-1516627145497-ae6968895b74?auto=format&fit=crop&w=400&q=80](https://images.unsplash.com/photo-1516627145497-ae6968895b74?auto=format&fit=crop&w=400&q=80)" alt="迷路">
+                <div class="event-card-content">
+                    <h3>配管迷路</h3>
+                    <p>張り巡らされたパイプの間をくぐり抜ける特設迷路！無事にゴールまでたどり着けるかな？</p>
+                </div>
+            </div>
+
+            <div class="event-card fade-in">
+                <img src="[https://images.unsplash.com/photo-1606326608606-aa0b62935f2b?auto=format&fit=crop&w=400&q=80](https://images.unsplash.com/photo-1606326608606-aa0b62935f2b?auto=format&fit=crop&w=400&q=80)" alt="クイズ">
+                <div class="event-card-content">
+                    <h3>バルブクイズ</h3>
+                    <p>水をコントロールする「バルブ」に関するおもしろクイズ。全問正解を目指して挑戦しよう！</p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<section id="access">
+    <h2 class="section-title">開催概要・アクセス</h2>
+    <div class="fade-in">
+        <table class="info-table">
+            <tr>
+                <th>日時</th>
+                <td>令和8年8月8日（土） 9:00 ～ 15:00</td>
+            </tr>
+            <tr>
+                <th>場所</th>
+                <td>小松管工事協同組合<br>石川県小松市下牧町ツ28</td>
+            </tr>
+            <tr>
+                <th>対象層</th>
+                <td>市内小学生、保護者、地域住民の方々（どなたでも大歓迎！）</td>
+            </tr>
+            <tr>
+                <th>料金・参加条件</th>
+                <td>入場無料・飛び込み参加歓迎</td>
+            </tr>
+            <tr>
+                <th>アクセス・駐車場</th>
+                <td><strong>フレスポ小松</strong>さん内に特設駐車場の準備がございます。当日は係員の誘導に従って安全にご来場ください。</td>
+            </tr>
+        </table>
+    </div>
+</section>
+
+<footer>
+    <div class="footer-content">
+        <p>【お問い合わせ先・公式SNS】</p>
+        <p class="org-name">小松管工事協同組合 青年部</p>
+        <p>&copy; 2026 小松管工事協同組合青年部 All Rights Reserved.</p>
+    </div>
+</footer>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const faders = document.querySelectorAll(".fade-in");
+        
+        const appearOptions = {
+            threshold: 0.1,
+            rootMargin: "0px 0px -50px 0px"
+        };
+
+        const appearOnScroll = new IntersectionObserver(function (entries, appearOnScroll) {
+            entries.forEach(entry => {
+                if (!entry.isIntersecting) {
+                    return;
+                } else {
+                    entry.target.classList.add("is-visible");
+                    appearOnScroll.unobserve(entry.target);
+                }
+            });
+        }, appearOptions);
+
+        faders.forEach(fader => {
+            appearOnScroll.observe(fader);
+        });
+    });
+</script>
+
+```
+
+</body>
+</html>
